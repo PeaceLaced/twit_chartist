@@ -1,2 +1,2 @@
-# twit_champ
-twitch game bot
+# twit_chartist
+TWIT: An interactive game of WITs
