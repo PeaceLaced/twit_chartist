@@ -23,7 +23,7 @@ from decimal import Decimal, setcontext, BasicContext
 # set decimal context, precision = 9, rounding = round half even
 setcontext(BasicContext)
 
-# trade_author
+# TODO: redo this whole file, xfer to tda-art
 
 MIN_PRICE = 2.00
 MAX_PRICE = 5.00

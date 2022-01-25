@@ -1,5 +1,5 @@
 """
-- TWIT CHAMP the previous winner interacts with this game bot.
+- TWIT CHALICE game bot
 
 - TwitchIO source: https://github.com/TwitchIO/TwitchIO
 - TwitchIO docs: https://twitchio.readthedocs.io/en/latest/
@@ -29,5 +29,3 @@ class Bot(commands.Bot):
         await channel.send(f'{self.nick} has entered the room.')
         progress.clearly()
         progress.bot(f'TO: {self.nick} BOT')
-        
-##### reset         - command (champ) - 100 WIT   - reset the modifier to 0.1
