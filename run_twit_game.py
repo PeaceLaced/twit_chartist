@@ -29,20 +29,38 @@ import sys
 opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
 if "-twitchart" in opts:
-    '''Load the CHART bot, to play the game!'''
+    '''TWIT CHART Bot'''
     from twit.twit_chart.__main__ import Bot
     bot = Bot()
     bot.run()
 
 if "-twitchamp" in opts:
-    '''Load the CHAMP bot, to be used by the winner of the previous game!'''
+    '''TWIT CHAMP Bot'''
     from twit.twit_champ.__main__ import Bot
     bot = Bot()
     bot.run()
 
 if "-twitchant" in opts:
-    '''Load the CHANT bot, to post messages, rules, etc. to chat!'''
+    '''TWIT CHANT Bot'''
     from twit.twit_chant.__main__ import Bot
+    bot = Bot()
+    bot.run()
+
+if "-twitchartist" in opts:
+    '''TWIT CHARTIST Bot'''
+    from twit.twit_chartist.__main__ import Bot
+    bot = Bot()
+    bot.run()
+
+if "-twitchalice" in opts:
+    '''TWIT CHALICE Bot'''
+    from twit.twit_chalice.__main__ import Bot
+    bot = Bot()
+    bot.run()
+
+if "-twitchamber" in opts:
+    '''TWIT CHAMBER Bot'''
+    from twit.twit_chamber.__main__ import Bot
     bot = Bot()
     bot.run()
     

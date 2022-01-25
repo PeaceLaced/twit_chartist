@@ -53,3 +53,5 @@ class Bot(commands.Bot):
         for handler_item in handler_return:
             check_return_string(handler_item)
             await ctx.send(f'{handler_item}')
+
+######## live_trade    - command (chant) (DONE for the most part), clean code in trade

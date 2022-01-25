@@ -9,6 +9,11 @@ from twit.twit_api.api_chat_handler import chat_handler
 from twit.twit_api.api_progress_handler import Progress as progress
 from twit.twit_api.config.config_twitch import ART_TOKEN, ROOM_LIST
 
+# look into ainit for database setup
+# self.loop.create_task(self.ainit())
+
+# TODO: COMMAND:INFO, move rules to info, then build better set of rules
+
 class CommandHandlerTypeException(TypeError):
     '''Command Function handler return should be a list of string(s).'''
     def __init__(self, msg=None, *args, **kwargs):
@@ -21,7 +26,7 @@ def check_return_list(handler_return):
 def check_return_string(handler_item):
     if not isinstance(handler_item, str):
         raise CommandHandlerTypeException('Command Function handler_item should be a string')
-    
+
 class Bot(commands.Bot):
     '''TWIT_CHART bot class using TwitchIO
     
@@ -38,7 +43,6 @@ class Bot(commands.Bot):
     def __init__(self):
         super().__init__(token=ART_TOKEN, prefix='!', initial_channels=ROOM_LIST)
 
-    # notify successful login/connect
     async def event_ready(self):
         channel=self.get_channel('peacelaced')
         await channel.send(f'{self.nick} has entered the room.')
@@ -46,13 +50,41 @@ class Bot(commands.Bot):
         progress.s(f'TO: {self.nick} BOT')
         
     async def event_message(self, message):
-        
         if message.echo:
             return
-    
         await self.handle_commands(message)
      
-##### TODO: change new_chat_handler to chat_handler after rebuild        
+    ###########################################################################
+    # WIN, TRADE, TRANSFER
+    ''' '''
+    @commands.command()
+    async def win(self, ctx: commands.Context, *args):
+        # still deciding on if both G/C
+        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
+        check_return_list(handler_return)
+        for handler_item in handler_return:
+            check_return_string(handler_item)
+            await ctx.send(f'{handler_item}')
+            
+    @commands.command()
+    async def trade(self, ctx: commands.Context, *args):
+        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
+        check_return_list(handler_return)
+        for handler_item in handler_return:
+            check_return_string(handler_item)
+            await ctx.send(f'{handler_item}')
+    
+    @commands.command()
+    async def transfer(self, ctx: commands.Context, *args):
+        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
+        check_return_list(handler_return)
+        for handler_item in handler_return:
+            check_return_string(handler_item)
+            await ctx.send(f'{handler_item}')
+    
+    ###########################################################################
+    # ABOUT, INFO, RULES
+    ''' '''
     @commands.command()
     async def about(self, ctx:commands.Context, *args):
         handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
@@ -62,26 +94,72 @@ class Bot(commands.Bot):
             await ctx.send(f'{handler_item}')
             
     @commands.command()
-    async def rules(self, ctx: commands.Context, *args):
-        ''' returns a list of game rules (simple)'''
+    async def info(self, ctx: commands.Context, *args):
         handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
         check_return_list(handler_return)
         for handler_item in handler_return:
             check_return_string(handler_item)
             await ctx.send(f'{handler_item}')
-        
+            
     @commands.command()
-    async def command(self, ctx: commands.Context, *args):
-        ''' returns a list of commands or command details'''
+    async def rules(self, ctx: commands.Context, *args):
         handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
         check_return_list(handler_return)
         for handler_item in handler_return:
             check_return_string(handler_item)
             await ctx.send(f'{handler_item}')
-        
+     
+    ###########################################################################
+    # BALANCE, VALUE, STATS
+    ''' '''
     @commands.command()
     async def balance(self, ctx: commands.Context, *args):
-        ''' return a string containing player WIT balance'''
+        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
+        check_return_list(handler_return)
+        for handler_item in handler_return:
+            check_return_string(handler_item)
+            await ctx.send(f'{handler_item}')
+            
+    @commands.command()
+    async def value(self, ctx: commands.Context, *args):
+        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
+        check_return_list(handler_return)
+        for handler_item in handler_return:
+            check_return_string(handler_item)
+            await ctx.send(f'{handler_item}')
+            
+    @commands.command()
+    async def stats(self, ctx: commands.Context, *args):
+        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
+        check_return_list(handler_return)
+        for handler_item in handler_return:
+            check_return_string(handler_item)
+            await ctx.send(f'{handler_item}')
+    
+    ###########################################################################
+    # COMMAND, POOL
+    ''' '''
+    @commands.command()
+    async def command(self, ctx: commands.Context, *args):
+        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
+        check_return_list(handler_return)
+        for handler_item in handler_return:
+            check_return_string(handler_item)
+            await ctx.send(f'{handler_item}')
+            
+    @commands.command()
+    async def pool(self, ctx: commands.Context, *args):
+        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
+        check_return_list(handler_return)
+        for handler_item in handler_return:
+            check_return_string(handler_item)
+            await ctx.send(f'{handler_item}')
+    
+    ###########################################################################
+    # FOSS, MIC, AD, END, FACTORIO
+    ''' '''
+    @commands.command()
+    async def foss(self, ctx: commands.Context, *args):
         handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
         check_return_list(handler_return)
         for handler_item in handler_return:
@@ -89,44 +167,15 @@ class Bot(commands.Bot):
             await ctx.send(f'{handler_item}')
     
     @commands.command()
-    async def pool(self, ctx: commands.Context, *args):
-        ''' TODO '''
-        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
-        check_return_list(handler_return)
-        for handler_item in handler_return:
-            check_return_string(handler_item)
-            await ctx.send(f'{handler_item}')
-        
-    @commands.command()
-    async def trade(self, ctx: commands.Context, *args):
-        ''' return a string containing a live trade trigger and que message'''
-        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
-        check_return_list(handler_return)
-        for handler_item in handler_return:
-            check_return_string(handler_item)
-            await ctx.send(f'{handler_item}')
-        
-    @commands.command()
-    async def foss(self, ctx: commands.Context, *args):
-        ''' TODO '''
-        handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
-        check_return_list(handler_return)
-        for handler_item in handler_return:
-            check_return_string(handler_item)
-            await ctx.send(f'{handler_item}')
-        
-    @commands.command()
     async def mic(self, ctx: commands.Context, *args):
-        ''' TODO '''
         handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
         check_return_list(handler_return)
         for handler_item in handler_return:
             check_return_string(handler_item)
-            await ctx.send(f'{handler_item}')
-        
+            await ctx.send(f'{handler_item}')        
+    
     @commands.command()
     async def ad(self, ctx: commands.Context, *args):
-        ''' TODO '''
         handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
         check_return_list(handler_return)
         for handler_item in handler_return:
@@ -135,16 +184,14 @@ class Bot(commands.Bot):
         
     @commands.command()
     async def end(self, ctx: commands.Context, *args):
-        ''' TODO '''
         handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
         check_return_list(handler_return)
         for handler_item in handler_return:
             check_return_string(handler_item)
             await ctx.send(f'{handler_item}')
-        
+    
     @commands.command()
-    async def win(self, ctx: commands.Context, *args):
-        ''' TODO '''
+    async def factorio(self, ctx: commands.Context, *args):
         handler_return = chat_handler(ctx.author.name, ctx.command.name, args)
         check_return_list(handler_return)
         for handler_item in handler_return:
