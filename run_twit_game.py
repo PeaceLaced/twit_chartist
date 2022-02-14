@@ -30,42 +30,58 @@ opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
 if "-twitchart" in opts:
     '''TWIT CHART Bot'''
-    from twit.twit_chart.__main__ import Bot
+    from twit.twit_bots.twit_chart.__main__ import Bot
     bot = Bot()
     bot.run()
 
 if "-twitchamp" in opts:
     '''TWIT CHAMP Bot'''
-    from twit.twit_champ.__main__ import Bot
+    from twit.twit_bots.twit_champ.__main__ import Bot
     bot = Bot()
     bot.run()
 
 if "-twitchant" in opts:
     '''TWIT CHANT Bot'''
-    from twit.twit_chant.__main__ import Bot
+    from twit.twit_bots.twit_chant.__main__ import Bot
     bot = Bot()
     bot.run()
 
 if "-twitchartist" in opts:
     '''TWIT CHARTIST Bot'''
-    from twit.twit_chartist.__main__ import Bot
+    from twit.twit_bots.twit_chartist.__main__ import Bot
     bot = Bot()
     bot.run()
 
 if "-twitchalice" in opts:
     '''TWIT CHALICE Bot'''
-    from twit.twit_chalice.__main__ import Bot
+    from twit.twit_bots.twit_chalice.__main__ import Bot
     bot = Bot()
     bot.run()
 
 if "-twitchamber" in opts:
     '''TWIT CHAMBER Bot'''
-    from twit.twit_chamber.__main__ import Bot
+    from twit.twit_bots.twit_chamber.__main__ import Bot
     bot = Bot()
     bot.run()
     
-if "-empty" in opts:
-    '''
-    a placeholder for later use
-    '''
+if "-fish" in opts:
+    '''Terminal Fish Tank'''
+    from twit.twit_misc.fish.__main__ import main
+    main()
+    
+if "-fire" in opts:
+    '''Terminal Fire'''
+    from twit.twit_misc.fire.fire import run
+    run()
+    
+if "-free" in opts:
+    '''Terminal 256colour'''
+    from twit.twit_misc.free.free import run
+    run()
+    
+if "-test" in opts:
+    '''test'''
+    from twit.twit_misc.free.test import run
+    run()
+    
     

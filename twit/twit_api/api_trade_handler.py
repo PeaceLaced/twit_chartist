@@ -15,24 +15,27 @@ from tda.utils import Utils
 from tda.client.synchronous import Client as TDAClientClass
 from tda.orders.equities import equity_buy_market, equity_sell_market
 
-from twit.twit_api.api_database_handler import mongo_data_handler
+from twit.twit_api.api_command_handler import update_game
 from twit.twit_api.api_progress_handler import Progress as progress
 from twit.twit_api.config.config_td_ameritrade import TOKEN_PATH, API_KEY_TDA, ACCOUNT_ID
 
-from decimal import Decimal, setcontext, BasicContext
-# set decimal context, precision = 9, rounding = round half even
-setcontext(BasicContext)
+from decimal import Context, setcontext, localcontext, Decimal
+valuecontext = Context(prec=5)
+setcontext(valuecontext)
 
 # TODO: redo this whole file, xfer to tda-art
 
 MIN_PRICE = 2.00
-MAX_PRICE = 5.00
+MAX_PRICE = 4.00
 MIN_NET_CHANGE = 0.10
 MIN_MARKETCAP = 50000000 # 50 Million
 MIN_VOLUME = 500000 # 500 Thousand
 
-def trade_handler(tda_client, trade_author, trade_symbol, hold_seconds):
+def trade_handler(tda_client, trade_packet): # as tuple of SYMBOL, SECONDS
     ''' manage trades here '''
+    
+    trade_symbol = trade_packet[0]
+    hold_seconds = trade_packet[1]
     
     # how about function call to actually trade
     STOP_TRYING_TO_BUY = 10
@@ -50,13 +53,10 @@ def trade_handler(tda_client, trade_author, trade_symbol, hold_seconds):
     order_json = order_get_details(tda_client, order_response, wait_for_fill=True, order_report=True)
     profit_data = data_syndicate(order_json, report_data=True, report_profit=True, return_profit=True)
     
-    mod_value = mongo_data_handler(None, profit_data[0][1], operation='MOD_TOTAL')
-    
     ###########
     ##### TODO: using mod total/total wit, return new wit value after trade is compelte
     ###########
-    
-    return mod_value
+    return profit_data[0][1]
 
 class SymbolSelectTypeException(TypeError):
     '''Raised when there is a type error in the symbol select API.'''
@@ -113,7 +113,7 @@ def get_client_session():
     
     return tda_client
     
-def get_symbols(tda_client):
+def update_symbol_list(tda_client):
     '''
     generates a symbol list for trading, :meth:`get_nasdaq_screener`  is required
                                          :meth:`final_symbol_filter` is required for 
@@ -155,7 +155,12 @@ def get_symbols(tda_client):
     
     symbol_list = final_symbol_filter(symbol_list, add_avoid=ADD_AVOID, strip_data=True)
     
-    return mongo_data_handler(None, symbol_list, operation='SYMBOLS')
+    if not isinstance(symbol_list, list):
+        raise SymbolSelectTypeException('symbol list error, no list detected')
+
+    update_game(None, symbol_list, update_type='SYMBOL-LIST')
+    
+    return None
 
 def get_nasdaq_screener(full_clean=True, dump_raw=False):
     '''connect to and download the nasdaq screener from api.nasdaq.com/api/screener/stocks
